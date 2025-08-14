@@ -15,6 +15,70 @@ An agentic search pipeline that combines Google Custom Search with local LLM syn
 - **Synthesize**: Generate coherent answers with local LLM
 - **Budget**: Smart context management for optimal performance
 
+## Architecture Flow
+
+```mermaid
+flowchart LR
+  %% WebSense — Search → Scrape → Synthesize (LM Studio)
+
+  A[User / Client App] -->|POST /v1/answer - query| B[Express API Layer]
+
+  subgraph S[WebSense Server - Express + TypeScript]
+    direction LR
+
+    B --> C[Validate Request - zod]
+    C -->|ok| D[Agent Service - orchestrator]
+    C -->|invalid| X1[[400 Bad Request]]
+
+    %% Search
+    subgraph SA[Search Adapter]
+      direction TB
+      D --> E[Build Google CSE query]
+      E --> F[Google CSE API call]
+      F --> G[Normalize and de-duplicate URLs]
+    end
+
+    %% Scrape
+    subgraph SC[Scraper]
+      direction TB
+      G --> H[Concurrent fetch - p-limit, undici]
+      H --> I{HTML content?}
+      I -- yes --> J[Extract with jsdom + Readability]
+      I -- no  --> K[[Skip or fallback]]
+      J --> L[Sanitize and cleanup - collapse whitespace]
+    end
+
+    %% Budgeting
+    subgraph SB[Budgeting / Packing]
+      direction TB
+      L --> M[Per-doc budget - PER_DOC_CHAR_BUDGET]
+      M --> N[Assemble context until TOTAL_CONTEXT_CHAR_BUDGET]
+    end
+
+    %% Synthesis
+    subgraph SL[LLM Synthesis]
+      direction TB
+      N --> O[Compose system & user prompts - anti-injection guard]
+      O --> P[LM Studio client - chat/completions]
+      P --> Q[(LM Studio)]
+      Q --> R[Answer with citations]
+    end
+
+    R --> T[Format JSON - answer, sources, meta]
+    T --> U[Return 200 OK]
+  end
+
+  %% External services
+  F -.->|HTTPS| GSE[(Google Programmable Search)]
+  H -.->|HTTPS| WP[(Target web pages)]
+  P -.->|HTTP| Q
+
+  %% Error & partials
+  E -->|quota / rate limit| X2[[429 or 502 upstream]]
+  H -->|timeouts / failures| X3[[Partial sources - meta.partial = true]]
+  P -->|unavailable| X4[[502 LLM unavailable]]
+```
+
 ## Quick Start
 
 1. **Install dependencies**
@@ -47,6 +111,8 @@ An agentic search pipeline that combines Google Custom Search with local LLM syn
      -H "Content-Type: application/json" \
      -d '{"query": "What is TypeScript?"}'
    ```
+
+   Check `postman/` folder for the Postman Collection
 
 ## Environment Variables
 

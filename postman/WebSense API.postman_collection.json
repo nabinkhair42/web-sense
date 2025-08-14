@@ -1,0 +1,101 @@
+{
+  "info": {
+    "_postman_id": "58e905e6-ba7c-427b-8dbc-80c2650a49f9",
+    "name": "WebSense API",
+    "description": "Collection for WebSense agentic search pipeline API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40662925"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/v1/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "health"]
+        },
+        "description": "Check the health status of WebSense services including Google CSE and LM Studio connectivity"
+      },
+      "response": []
+    },
+    {
+      "name": "Generate Answer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"Introducing Civen AI: AI-Powered Cover Letter Generator?\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/answer",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "answer"]
+        },
+        "description": "Generate an answer by searching, scraping, and synthesizing content from web sources"
+      },
+      "response": []
+    },
+    {
+      "name": "Generate Answer - Simple Query",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"Brutalist Minimalism: The Art of Architectural Web Design\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/answer",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "answer"]
+        },
+        "description": "Simple query without optional parameters"
+      },
+      "response": []
+    },
+    {
+      "name": "Generate Answer - Limited Sources",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"Latest JavaScript features\",\n  \"maxLinks\": 3\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/answer",
+          "host": ["{{baseUrl}}"],
+          "path": ["v1", "answer"]
+        },
+        "description": "Query with limited number of sources for faster response"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
