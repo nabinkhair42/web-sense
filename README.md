@@ -1,5 +1,11 @@
 # WebSense
 
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6.0-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Code Style](https://img.shields.io/badge/Code%20Style-Prettier-orange.svg)](https://prettier.io/)
+[![Linting](https://img.shields.io/badge/Linting-ESLint-red.svg)](https://eslint.org/)
+
 An agentic search pipeline that combines Google Custom Search with local LLM synthesis via LM Studio.
 
 ## Features
@@ -14,7 +20,7 @@ An agentic search pipeline that combines Google Custom Search with local LLM syn
 1. **Install dependencies**
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 2. **Configure environment**
@@ -27,7 +33,7 @@ An agentic search pipeline that combines Google Custom Search with local LLM syn
 3. **Start development server**
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 4. **Test endpoints**
@@ -52,11 +58,12 @@ An agentic search pipeline that combines Google Custom Search with local LLM syn
 
 ## Development
 
-- `npm run dev`: Start development server with hot reload
-- `npm run build`: Build for production
-- `npm run test`: Run tests
-- `npm run lint`: Lint code
-- `npm run type-check`: Type check without building
+- `pnpm run dev`: Start development server with hot reload
+- `pnpm run build`: Build for production
+- `pnpm run test`: Run tests
+- `pnpm run lint`: Lint code
+- `pnpm run format`: Format code with Prettier
+- `pnpm run type-check`: Type check without building
 
 ## Architecture
 
@@ -69,13 +76,28 @@ The project follows a clean architecture pattern with clear separation of concer
 - **Domain**: Core models and interfaces
 - **Utils**: Helper functions and utilities
 
-## Next Steps
+## API Endpoints
 
-The current implementation includes the project structure and placeholder services. Next phases will implement:
+- `POST /v1/answer` - Generate answers from web sources
+- `GET /v1/health` - Health check and service status
 
-1. Google CSE search adapter
-2. Content scraping with Readability
-3. LM Studio LLM client
-4. Full pipeline orchestration
-5. Error handling and retries
-6. Testing and validation
+## Tech Stack
+
+- **Backend**: Express.js + TypeScript
+- **Search**: Google Custom Search Engine API
+- **Scraping**: Undici + Readability + JSDOM
+- **LLM**: LM Studio (OpenAI-compatible)
+- **Code Quality**: ESLint + Prettier + Husky
+- **Development**: Nodemon + ts-node
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
