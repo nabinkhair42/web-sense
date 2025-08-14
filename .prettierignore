@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnpm/
+
+# Build outputs
+dist/
+build/
+
+# Generated files
+*.d.ts
+*.d.ts.map
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+
+# Package files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Git
+.git/
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+
+
+
